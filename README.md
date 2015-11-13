@@ -34,3 +34,32 @@ For details on how to install the tranSMART Foundationʼs versions, refer to
   [4]: http://tomcat.apache.org/
   [5]: https://github.com/thehyve/transmart-data
   [6]: https://wiki.transmartfoundation.org/
+  
+  
+  
+
+Big Data Configuration
+
+Pre-requisites 
+------------
+tranSMART research branch (https://github.com/transmart/transmartApp/tree/research) is required to be installed (not running) in order to deploy Bigdata tranSMART.
+
+Installation
+------------
+
+1. Add configurations into Config.groovy
+org.transmart.kv.enable = true
+hbase.rootdir = "hdfs://{hadoop-master-hostname}:{hdfs-port}/hbase"
+hbase.master = "{hbase-master-hostname}"
+hbase.zookeeper.quorum = "{zookeeper-node-hostname}"
+hbase.tmp.dir = "{hbase-data-dir}"
+hbase.zookeeper.property.clientPort = "{zookeeper-port}"
+fs.default.name = "hdfs://{hadoop-master-hostname}:{hdfs-port}"
+
+2. Add configurations into BuildConfig.groovy
+Please add grails.plugin.location.'hbase-core' = "{your-path}/hbase-core"
+grails.plugin.location.'sendfile' = "{your-path}/sendfile-0.2"
+grails.plugin.location.'rdc-rmodules' = "{your-path}/rdc-rmodules"
+
+3. Run
+grails run-app
