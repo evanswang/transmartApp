@@ -147,7 +147,7 @@ grails.project.dependency.resolution = {
             runtime ':blend4j-plugin:1.2.4'
             runtime ':transmart-metacore-plugin:1.2.4'
 
-            test ':transmart-core-db-tests:1.2.4'
+            //test ':transmart-core-db-tests:1.2.4'
         } else {
             dm.internalDependencies delegate
         }
@@ -160,7 +160,7 @@ grails.project.dependency.resolution = {
 dm?.with {
     configureInternalPlugin 'compile', 'rdc-rmodules'
     configureInternalPlugin 'runtime', 'transmart-core'
-    configureInternalPlugin 'test', 'transmart-core-db-tests'
+    //configureInternalPlugin 'test', 'transmart-core-db-tests'
     configureInternalPlugin 'compile', 'transmart-gwas'
     configureInternalPlugin 'compile', 'transmart-java'
     configureInternalPlugin 'compile', 'biomart-domain'
@@ -195,3 +195,7 @@ codenarc.reports = {
 }
 
 // vim: set et ts=4 sw=4:
+
+//grails.plugin.location.'sendfile' = "/home/ubuntu/git/sendfile-0.2"
+grails.plugin.location.'hbase-core' = "/home/ubuntu/hbase-core"
+//grails.plugin.location.'rdc-rmodules' = "/home/ubuntu/git/rdc-rmodules"
