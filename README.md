@@ -39,13 +39,14 @@ For details on how to install the tranSMART Foundationʼs versions, refer to
   
 
 Big Data Configuration
+------------
 
 Pre-requisites 
-------------
+---------
 tranSMART research branch (https://github.com/transmart/transmartApp/tree/research) is required to be installed (not running) in order to deploy Bigdata tranSMART.
 
 Installation
-------------
+---------
 
 1. Add configurations into Config.groovy
 org.transmart.kv.enable = true
