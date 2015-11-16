@@ -41,26 +41,17 @@ class HighDimExportService {
         Long resultInstanceId = args.resultInstanceId as Long
         List<String> conceptKeys = args.conceptKeys
 
-        String jobName = args.jobName
-        String dataType = args.dataType
-        List<String> conceptPaths = args.conceptPaths
-        String studyDir = args.studyDir
-        Collection<String> gplIds = args.gplIds
-        String format = args.format
-
-        System.err.println("************************* @wsc print debug info starting ********************");
-        for (Objects obj : args.keySet()) {
-            System.err.println("obj : " + obj.toString());
-        }
-        System.err.println("jobName : " + jobName);
-        System.err.println("dataType : " + dataType);
-        for (String conceptPath : conceptPaths)
-            System.err.println("conceptPath : " + conceptPath);
-        System.err.println("studyDir : " + studyDir);
-        for (String gplid : gplIds)
-            System.err.println("gplid : " + gplid);
-        System.err.println("format : " + format);
-        System.err.println("************************* @wsc print debug info ending **********************");
+        /*******************************
+         * get annotation
+        select
+        smap.SUBJECT_ID, smap.SAMPLE_TYPE, smap.TIMEPOINT,
+        smap.TISSUE_TYPE, smap.GPL_ID, smap.ASSAY_ID,
+        smap.SAMPLE_CD, smap.TRIAL_NAME, smap.concept_code
+        from i2b2demodata.qt_patient_set_collection pset
+        inner join deapp.de_subject_sample_mapping smap
+        on pset.patient_num = smap.patient_id
+        where pset.result_instance_id = 28702;
+        */
 
         if (jobIsCancelled(args.jobName)) {
             return null
@@ -119,19 +110,17 @@ class HighDimExportService {
         //File outputFile = new File(studyDir, dataType + '.' + format.toLowerCase())
         //String fileName = outputFile.getAbsolutePath()
 
-        File nodeDataFolder = new File(studyDir, getRelativeFolderPathForSingleNode(term))
         File outputFile = new File(studyDir,
                 "${dataType}_${makeFileNameFromConceptPath(conceptPath)}_${index}.${format.toLowerCase()}")
-        if (outputFile.exists()) {
-            throw new RuntimeException("${outputFile} file already exists.")
-        }
-        nodeDataFolder.mkdirs()
 
-        if(ConfigurationHolder.config.org.transmart.kv.enable && dataType.equals("mrna")) { List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
-
-            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(term.getFullName())
+        if(ConfigurationHolder.config.org.transmart.kv.enable && dataType.equals("mrna")) {
+            // get patient ids
+            List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
+            // get trial_name and concept_cd from concept path
+            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath)
             String studyName = study_concecpt.get("study_name")
             String conceptCD = study_concecpt.get("concept_cd")
+            //
             Map<BigDecimal, AnnotationRecord> patientMap = SQLModule.getPatientMapping(patientList, conceptCD)
             final String COL_FAMILY_RAW = "raw"
             final String COL_FAMILY_LOG = "log"
@@ -230,5 +219,12 @@ class HighDimExportService {
             return true
         }
         return false
+    }
+
+   def int ordinalIndexOf(String str, char c, int n) {
+        int pos = str.indexOf(c, 0);
+        while (n-- > 0 && pos != -1)
+            pos = str.indexOf(c, pos+1);
+        return pos;
     }
 }
