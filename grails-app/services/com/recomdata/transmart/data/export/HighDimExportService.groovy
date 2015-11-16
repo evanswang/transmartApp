@@ -117,15 +117,17 @@ class HighDimExportService {
             // get patient ids
             List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
             // get trial_name and concept_cd from concept path
-            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath)
+            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath.substring(ordinalIndexOf(conceptPath, '\\', 3)))
+            System.err.println("************************************* wsc print concept path ************** " + conceptPath.substring(ordinalIndexOf(conceptPath, '\\', 3)));
             String studyName = study_concecpt.get("study_name")
             String conceptCD = study_concecpt.get("concept_cd")
             //
-            Map<BigDecimal, AnnotationRecord> patientMap = SQLModule.getPatientMapping(patientList, conceptCD)
+            Map<String, AnnotationRecord> patientMap = SQLModule.getPatientMapping(patientList, conceptCD)
             final String COL_FAMILY_RAW = "raw"
             final String COL_FAMILY_LOG = "log"
             final String COL_FAMILY_ZSCORE = "zscore"
 
+            // default expression data type is raw, but you can use getAllRecords to get all raw, log and zscore
             KVMrnaModule kvMrnaModule = new KVMrnaModule("microarray", "raw")
             PrintWriter pw = null
             long t1 = System.currentTimeMillis()
