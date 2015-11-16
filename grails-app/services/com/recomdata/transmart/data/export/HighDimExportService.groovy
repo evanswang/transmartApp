@@ -117,8 +117,8 @@ class HighDimExportService {
             // get patient ids
             List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
             // get trial_name and concept_cd from concept path
-            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath.substring(ordinalIndexOf(conceptPath, '\\', 3)))
-            System.err.println("************************************* wsc print concept path ************** " + conceptPath.substring(ordinalIndexOf(conceptPath, '\\', 3)));
+            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath.substring(ordinalIndexOf(conceptPath, "\\", 2)))
+            System.err.println("************************************* wsc print concept path ************** " + conceptPath.substring(ordinalIndexOf(conceptPath, '\\', 2)));
             String studyName = study_concecpt.get("study_name")
             String conceptCD = study_concecpt.get("concept_cd")
             //
@@ -223,7 +223,7 @@ class HighDimExportService {
         return false
     }
 
-   def int ordinalIndexOf(String str, char c, int n) {
+   def int ordinalIndexOf(String str, String c, int n) {
         int pos = str.indexOf(c, 0);
         while (n-- > 0 && pos != -1)
             pos = str.indexOf(c, pos+1);
