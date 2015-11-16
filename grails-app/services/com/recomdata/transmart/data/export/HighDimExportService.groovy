@@ -48,6 +48,17 @@ class HighDimExportService {
         Collection<String> gplIds = args.gplIds
         String format = args.format
 
+        System.err.println("************************* @wsc print debug info starting ********************");
+        System.err.println("jobName : " + jobName);
+        System.err.println("dataType : " + dataType);
+        for (String conceptPath in conceptPaths)
+            System.err.println("conceptPath : " + conceptPath);
+        System.err.println("studyDir : " + studyDir);
+        for (String gplid in gplIds)
+            System.err.println("gplid : " + gplid);
+        System.err.println("format : " + format);
+        System.err.println("************************* @wsc print debug info ending **********************");
+
         if (jobIsCancelled(args.jobName)) {
             return null
         }
@@ -105,6 +116,13 @@ class HighDimExportService {
         //File outputFile = new File(studyDir, dataType + '.' + format.toLowerCase())
         //String fileName = outputFile.getAbsolutePath()
 
+        File nodeDataFolder = new File(studyDir, getRelativeFolderPathForSingleNode(term))
+        File outputFile = new File(studyDir,
+                "${dataType}_${makeFileNameFromConceptPath(conceptPath)}_${index}.${format.toLowerCase()}")
+        if (outputFile.exists()) {
+            throw new RuntimeException("${outputFile} file already exists.")
+        }
+        nodeDataFolder.mkdirs()
 
         if(ConfigurationHolder.config.org.transmart.kv.enable && dataType.equals("mrna")) { List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
 
@@ -121,13 +139,7 @@ class HighDimExportService {
             long t1 = System.currentTimeMillis()
             int count = 0
             try {
-                File nodeDataFolder = new File(studyDir, getRelativeFolderPathForSingleNode(term))
-                File outputFile = new File(studyDir,
-                        "${dataType}_${makeFileNameFromConceptPath(conceptPath)}_${index}.${format.toLowerCase()}")
-                if (outputFile.exists()) {
-                    throw new RuntimeException("${outputFile} file already exists.")
-                }
-                nodeDataFolder.mkdirs()
+
                 //outputFiles << outputFile
 
                 pw = new PrintWriter(outputFile)
