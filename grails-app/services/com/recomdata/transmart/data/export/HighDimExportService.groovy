@@ -49,12 +49,15 @@ class HighDimExportService {
         String format = args.format
 
         System.err.println("************************* @wsc print debug info starting ********************");
+        for (Objects obj : args.keySet()) {
+            System.err.println("obj : " + obj.toString());
+        }
         System.err.println("jobName : " + jobName);
         System.err.println("dataType : " + dataType);
-        for (String conceptPath in conceptPaths)
+        for (String conceptPath : conceptPaths)
             System.err.println("conceptPath : " + conceptPath);
         System.err.println("studyDir : " + studyDir);
-        for (String gplid in gplIds)
+        for (String gplid : gplIds)
             System.err.println("gplid : " + gplid);
         System.err.println("format : " + format);
         System.err.println("************************* @wsc print debug info ending **********************");
