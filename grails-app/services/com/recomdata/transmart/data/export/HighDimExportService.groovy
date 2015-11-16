@@ -117,10 +117,11 @@ class HighDimExportService {
             // get patient ids
             List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
             // get trial_name and concept_cd from concept path
+            // ordinalIndexOf remove extra head node
             Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath.substring(ordinalIndexOf(conceptPath, "\\", 2)))
-            System.err.println("************************************* wsc print concept path ************** " + conceptPath.substring(ordinalIndexOf(conceptPath, '\\', 2)));
             String studyName = study_concecpt.get("study_name")
             String conceptCD = study_concecpt.get("concept_cd")
+            System.err.println("***************************************************************************" + conceptCD);
             //
             Map<String, AnnotationRecord> patientMap = SQLModule.getPatientMapping(patientList, conceptCD)
             final String COL_FAMILY_RAW = "raw"
@@ -140,7 +141,9 @@ class HighDimExportService {
                 pw.println("PATIENT ID\tSAMPLE TYPE\tTIMEPOINT\tTISSUE TYPE\tGPL ID\tASSAY ID\tSAMPLE CODE\tTRIALNAME\tVALUE\tLOG2E\tZSCORE\tPROBE\tGENE ID\tGENE SYMBO")
                 Map<String, List<ExpressionRecord>> resultsMap = new HashMap<String, List<ExpressionRecord>>()
                 int i = 0
+
                 patientMap.keySet().each { patientID ->
+
                     count ++;
                     resultsMap.put(patientID, kvMrnaModule.getAllRecords(studyName, patientID, conceptCD))
                     i++
