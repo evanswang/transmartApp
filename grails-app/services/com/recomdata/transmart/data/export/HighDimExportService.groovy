@@ -121,7 +121,7 @@ class HighDimExportService {
             Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath.substring(ordinalIndexOf(conceptPath, "\\", 2)))
             String studyName = study_concecpt.get("study_name")
             String conceptCD = study_concecpt.get("concept_cd")
-            System.err.println("***************************************************************************" + conceptCD);
+            
             //
             Map<String, AnnotationRecord> patientMap = SQLModule.getPatientMapping(patientList, conceptCD)
             final String COL_FAMILY_RAW = "raw"
@@ -143,11 +143,10 @@ class HighDimExportService {
                 int i = 0
 
                 patientMap.keySet().each { patientID ->
-
-                    count ++;
+                    count ++
                     resultsMap.put(patientID, kvMrnaModule.getAllRecords(studyName, patientID, conceptCD))
                     i++
-                    if (i >= 20) {
+                    //if (i >= 20) {
                         resultsMap.keySet().each { paID ->
                             AnnotationRecord annoRecord = patientMap.get(paID)
                             resultsMap.get(paID).each { record ->
@@ -169,7 +168,7 @@ class HighDimExportService {
                         }
                         resultsMap.clear()
                         i = 0
-                    }
+                    //} // if
                 }
             } catch (IOException e) {
                 e.printStackTrace()
@@ -233,3 +232,4 @@ class HighDimExportService {
         return pos;
     }
 }
+
