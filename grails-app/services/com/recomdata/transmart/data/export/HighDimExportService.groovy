@@ -148,17 +148,13 @@ class HighDimExportService {
                     resultsMap.put(patientID, kvMrnaModule.getAllRecords(studyName, patientID, conceptCD))
                     i++
                     // TODO: get all gene symbol and id to a hashmap. retrieve all gene info from one patient should be enough
-                    if (probe2geneMap.isEmpty()) {
+                    if (probe2geneMap == null) {
                         List<ExpressionRecord> expressionSample = resultsMap.values().getAt(0)
                         List<String> probeList = new ArrayList<String>()
                         expressionSample.each { record ->
                             probeList.add(record.getProbeset())
                         }
                         probe2geneMap = SQLModule.getGeneInfo(probeList)
-
-                        probe2geneMap.keySet().each() { probe ->
-                            System.err.println("************* @wsc print ************** " + probe + " : " + probe2geneMap.get(probe))
-                        }
                     }
 
                     //if (i >= 20) {
@@ -177,8 +173,7 @@ class HighDimExportService {
                                         record.getValues().get(COL_FAMILY_LOG) + "\t" +
                                         record.getValues().get(COL_FAMILY_ZSCORE) + "\t" +
                                         record.getProbeset() + "\t" +
-                                        record.getGene() + "\t" +
-                                        "null")
+                                        probe2geneMap.get(record.getProbeset()))
                             }
                         }
                         resultsMap.clear()
