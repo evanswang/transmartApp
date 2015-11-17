@@ -127,7 +127,7 @@ grails.project.dependency.resolution = {
         compile ":codenarc:0.21"
 
         if (!dm) {
-            compile ':rdc-rmodules:1.2.4'
+            //compile ':rdc-rmodules:1.2.4'
             runtime ':transmart-core:1.2.4'
             compile ':transmart-gwas:1.2.4'
             //// already included in transmart-gwas
@@ -158,7 +158,7 @@ grails.project.dependency.resolution = {
 }
 
 dm?.with {
-    configureInternalPlugin 'compile', 'rdc-rmodules'
+    //configureInternalPlugin 'compile', 'rdc-rmodules'
     configureInternalPlugin 'runtime', 'transmart-core'
     //configureInternalPlugin 'test', 'transmart-core-db-tests'
     configureInternalPlugin 'compile', 'transmart-gwas'
@@ -198,4 +198,4 @@ codenarc.reports = {
 
 //grails.plugin.location.'sendfile' = "/home/ubuntu/git/sendfile-0.2"
 grails.plugin.location.'hbase-core' = "/home/ubuntu/hbase-core"
-//grails.plugin.location.'rdc-rmodules' = "/home/ubuntu/git/rdc-rmodules"
+grails.plugin.location.'rdc-rmodules' = "/home/ubuntu/rdc-rmodules"
