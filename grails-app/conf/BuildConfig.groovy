@@ -196,6 +196,5 @@ codenarc.reports = {
 
 // vim: set et ts=4 sw=4:
 
-//grails.plugin.location.'sendfile' = "/home/ubuntu/git/sendfile-0.2"
 grails.plugin.location.'hbase-core' = "/home/ubuntu/hbase-core"
 grails.plugin.location.'rdc-rmodules' = "/home/ubuntu/Rmodules"
