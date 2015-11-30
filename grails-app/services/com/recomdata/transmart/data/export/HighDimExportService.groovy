@@ -187,15 +187,27 @@ class HighDimExportService {
                 long t2 = System.currentTimeMillis()
             }
         } else if (ConfigurationHolder.config.org.transmart.kv.enable && dataType.equals("vcf")) {
-            List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId)
-            Map<BigDecimal, String> patientMap = SQLModule.getPatientMap(patientList)
+            // get patient ids
+            List<BigDecimal> patientList = SQLModule.getPatients(resultInstanceId + "")
+            // get trial_name and concept_cd from concept path
+            // ordinalIndexOf remove extra head node
+            Map<String, String> study_concecpt = SQLModule.getTrialandConceptCD(conceptPath.substring(ordinalIndexOf(conceptPath, "\\", 2)))
+            String studyName = study_concecpt.get("study_name")
+            String conceptCD = study_concecpt.get("concept_cd")
+
+            //
+            Map<String, AnnotationRecord> patientMap = SQLModule.getPatientMapping(patientList, conceptCD)
+
+
+
+            //Map<BigDecimal, String> patientMap = SQLModule.getPatientMap(patientList)
             PrintWriter pw = null
-            KVVcfModule kvVcfModule = new KVVcfModule("vcf-subject.index");
+            KVVcfModule kvVcfModule = new KVVcfModule("vcf-subject");
             try {
                 pw = new PrintWriter(outputFile)
                 pw.println("TRIAL NAME\tPATIENT ID\tCHROMOSOME\tPOSITION\tASSAYID\tGPLID\tREFERENCE\tREFERENCEALLELE\tRSID\tSAMPLECODE\tSAMPLETYPE\tTIMEPOINT\tTISSUETYPE\tVARIANT\tVARIANTTYPE")
                 patientMap.keySet().each { patientID ->
-                    kvVcfModule.writeAllRecords(pw, patientMap.get(patientID), patientID)
+                    kvVcfModule.writeAllRecords(pw, studyName, conceptCD, patientMap.get(patientID).getSubjectID())
                 }
             } catch (IOException e) {
                 e.printStackTrace()
